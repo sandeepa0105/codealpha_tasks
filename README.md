@@ -1,2 +1,2 @@
 # codealpha_tasks
-codealpha_tasks Sandeepa Dilshan
+CodeAlpha Internship Program in C++ Programming
