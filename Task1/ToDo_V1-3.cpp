@@ -27,21 +27,21 @@ void saveTasksToFile(const vector<Task>& tasks, const string& filename);
 void exportTasksToCSV(const vector<Task>& tasks, const string& filename);
 void sortTasksByDueDate(vector<Task>& tasks);
 void showMenu();
-string getTodayDate();  // ✅ Add this here1
+string getTodayDate();  // Returns today's date as a string (YYYY-MM-DD)
 
 int main() {
-    vector<Task> tasks;
-    const string dataFile = "tasks.txt";
-    const string csvFile = "tasks.csv";
+    vector<Task> tasks;       // List to store all tasks
+    const string dataFile = "tasks.txt";    // File to save/load tasks
+    const string csvFile = "tasks.csv";     // CSV file for export
 
-    loadTasksFromFile(tasks, dataFile);
+    loadTasksFromFile(tasks, dataFile);        // Load existing tasks from file
 
     int choice;
     do {
-        showMenu();
+        showMenu();              // Display menu options
         cout << "Enter your choice: ";
         cin >> choice;
-        cin.ignore();
+        cin.ignore();           // Ignore newline character
 
         switch (choice) {
             case 1: addTask(tasks); break;
@@ -58,11 +58,12 @@ int main() {
         }
 
         cout << endl;
-    } while (choice != 7);
+    } while (choice != 7);             // Loop until user chooses to exit
 
     return 0;
 }
 
+// Display menu options to the user
 void showMenu() {
     cout << "====== TO-DO LIST MENU ======\n";
     cout << "1. Add Task\n";
@@ -74,16 +75,18 @@ void showMenu() {
     cout << "7. Save and Exit\n";
 }
 
+// Add a new task to the task list
 void addTask(vector<Task>& tasks) {
     string desc, due;
     cout << "Enter task description: ";
     getline(cin, desc);
     cout << "Enter due date (YYYY-MM-DD): ";
     getline(cin, due);
-    tasks.emplace_back(desc, due);
+    tasks.emplace_back(desc, due);      // Add new task to list
     cout << "Task added.\n";
 }
 
+// Mark a task as completed based on user input
 void markTaskCompleted(vector<Task>& tasks) {
     if (tasks.empty()) {
         cout << "No tasks available.\n";
@@ -104,6 +107,7 @@ void markTaskCompleted(vector<Task>& tasks) {
     }
 }
 
+// Delete a task based on user input
 void deleteTask(vector<Task>& tasks) {
     if (tasks.empty()) {
         cout << "No tasks to delete.\n";
@@ -124,13 +128,14 @@ void deleteTask(vector<Task>& tasks) {
     }
 }
 
+// Display all tasks with color-coded status and overdue flag
 void viewTasks(const vector<Task>& tasks) {
     if (tasks.empty()) {
         cout << "No tasks to display.\n";
         return;
     }
 
-    string today = getTodayDate();
+    string today = getTodayDate();      // Get today's date
 
     cout << "------ TASK LIST ------\n";
     for (size_t i = 0; i < tasks.size(); ++i) {
@@ -148,7 +153,7 @@ void viewTasks(const vector<Task>& tasks) {
     }
 }
 
-
+// Sort tasks by due date in ascending order
 void sortTasksByDueDate(vector<Task>& tasks) {
     sort(tasks.begin(), tasks.end(), [](const Task& a, const Task& b) {
         return a.dueDate < b.dueDate;
@@ -156,6 +161,7 @@ void sortTasksByDueDate(vector<Task>& tasks) {
     cout << "Tasks sorted by due date.\n";
 }
 
+// Load tasks from file (each line is: description|dueDate|completed)
 void loadTasksFromFile(vector<Task>& tasks, const string& filename) {
     ifstream file(filename);
     if (!file.is_open()) return;
@@ -173,6 +179,7 @@ void loadTasksFromFile(vector<Task>& tasks, const string& filename) {
     file.close();
 }
 
+// Save tasks to file in the format: description|dueDate|completed
 void saveTasksToFile(const vector<Task>& tasks, const string& filename) {
     ofstream file(filename);
     for (const auto& task : tasks) {
@@ -181,6 +188,7 @@ void saveTasksToFile(const vector<Task>& tasks, const string& filename) {
     file.close();
 }
 
+// Export tasks to CSV format (task, due date, completed)
 void exportTasksToCSV(const vector<Task>& tasks, const string& filename) {
     ofstream file(filename);
     file << "Task,Due Date,Completed\n";
@@ -193,6 +201,7 @@ void exportTasksToCSV(const vector<Task>& tasks, const string& filename) {
     cout << "Tasks exported to " << filename << "\n";
 }
 
+// Get today's date in the format YYYY-MM-DD
 string getTodayDate() {
     time_t now = time(nullptr);
     tm* t = localtime(&now);
